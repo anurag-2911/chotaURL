@@ -1,0 +1,17 @@
+version: '3'
+services:
+  urlshortener:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+
+  web:
+    build:
+      context: ./client  # Assuming React code is in /client directory
+      dockerfile: Dockerfile
+    ports:
+      - 3000:80
+    depends_on:
+      - urlshortener
