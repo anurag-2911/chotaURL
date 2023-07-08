@@ -15,7 +15,7 @@ Next Level Requirements:
 4. Production grade UI. 
 
 Next Level Requirements:
-1. Deployment to AWS.
+1. Deployment of Dockers and Kubernetes to AWS.
 2. Millions of requests per second.
 3. Database partitioning.
 4. Cache optimization.
