@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strconv"
 	"sync"
-
+	"github.com/rs/cors"
 	"github.com/gorilla/mux"
 )
 
@@ -20,12 +20,13 @@ func HandleRequests() {
 	r := mux.NewRouter()
 	r.HandleFunc("/add/{url}", addURL)
 	r.HandleFunc("/{id}", redirectURL)
-
-	err := http.ListenAndServe(":"+port, r)
+	handler:=cors.Default().Handler(r)
+	fmt.Println("listening on port " + port)
+	err := http.ListenAndServe(":"+port, handler)
 	if err != nil {
 		fmt.Printf("error is %s\n", err)
 	}
-	fmt.Println("listen and server ")
+	
 
 }
 func addURL(w http.ResponseWriter, r *http.Request) {
