@@ -8,13 +8,13 @@ Basic Implementation:
 6. Docker-Compose is used to start both the container.
 7. Kubernetes is used to manage both the container.
 
-Next level requirements:
+Next Level Requirements:
 1. Database implementation.
 2. Caching implementation.
 3. Load balancer and multiple instances of backend servers.
 4. Production grade UI. 
 
-Next level requirements:
+Next Level Requirements:
 1. Deployment to AWS.
 2. Millions of requests per second.
 3. Database partitioning.
@@ -22,3 +22,9 @@ Next level requirements:
 5. Application optimization.
 6. Kubernetes optimization.
 7. Kafka Implementation.
+
+Next Level Implementation:
+1. Concurrency in golang.
+2. React best practices.
+3. DSA using golang.
+4. Advance DB concepts.
