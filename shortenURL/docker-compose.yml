@@ -9,7 +9,7 @@ services:
 
   web:
     build:
-      context: ./client  # Assuming React code is in /client directory
+      context: ./client  
       dockerfile: Dockerfile
     ports:
       - 3000:80
