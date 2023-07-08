@@ -21,3 +21,4 @@ Next level requirements:
 4. Cache optimization.
 5. Application optimization.
 6. Kubernetes optimization.
+7. Kafka Implementation.
