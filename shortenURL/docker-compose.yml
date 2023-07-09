@@ -15,7 +15,6 @@ services:
 
   backend:
     build: ./server
-    dockerfile: Dockerfile
     image: anurag2911/backend    
     ports:
       - "8080:8080"
