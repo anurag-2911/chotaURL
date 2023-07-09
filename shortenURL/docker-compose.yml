@@ -1,17 +1,23 @@
 version: '3'
 services:
-  urlshortener:
-    build: 
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - 8080:8080
-
-  web:
+  frontend:
     build:
-      context: ./client  
+      context: ./client
       dockerfile: Dockerfile
+    image: anurag2911/frontend
     ports:
-      - 3000:80
-    depends_on:
-      - urlshortener
+      - "3000:3000"
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    environment:
+      - REACT_APP_SERVER_URL=http://backend:8080
+
+  backend:
+    build: ./server
+    dockerfile: Dockerfile
+    image: anurag2911/backend    
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./server:/go/src/app
