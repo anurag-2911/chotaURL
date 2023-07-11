@@ -18,14 +18,8 @@ COPY . .
 # Build the React app
 RUN npm run build
 
-# Use a lightweight version of Node.js as a parent image
-FROM nginx:stable-alpine
+# Expose port 3000 to the outside world
+EXPOSE 3000
 
-# Copy build files from build stage to nginx
-COPY --from=0 /app/build /usr/share/nginx/html
-
-# Expose port 80 to the outside world
-EXPOSE 80
-
-# Start Nginx server
-CMD ["nginx", "-g", "daemon off;"]
+# Start Node server
+CMD [ "npm", "start"]
