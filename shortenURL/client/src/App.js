@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
+import HelloWorld from './Hello/HelloWorld';
 
 function App() {
   const [url, setUrl] = useState("");
@@ -35,7 +36,7 @@ function App() {
       console.log("original url is " + originalUrl);
       window.open("http://" + originalUrl, "_blank");
     } catch (error) {
-      setError("Internal Error");
+      setError("Internal Server Error");
     } finally {
       setLoading(false);
     }
@@ -69,6 +70,10 @@ function App() {
             </div>
           )}
           {error && <p>{error}</p>}
+        </div>
+        <br/>
+        <div>
+          <HelloWorld />
         </div>
       </div>
       <div className="info-area">

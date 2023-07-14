@@ -24,9 +24,12 @@ func init() {
 }
 func HandleRequests() {
 	r := mux.NewRouter()
+	r.HandleFunc("/hello", helloHandler).Methods("GET")
 	r.HandleFunc("/add/{url}", addURL)
 	r.HandleFunc("/{id}", redirectURL)
 	r.HandleFunc("/get/{id}", getURL)
+	
+	http.Handle("/", r)
 	handler := cors.Default().Handler(r)
 	fmt.Println("listening on port " + port)
 	err := http.ListenAndServe(":"+port, handler)
@@ -34,6 +37,9 @@ func HandleRequests() {
 		fmt.Printf("error is %s\n", err)
 	}
 
+}
+func helloHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "Hello World")
 }
 func getURL(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
