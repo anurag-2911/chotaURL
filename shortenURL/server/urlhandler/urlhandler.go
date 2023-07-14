@@ -1,12 +1,15 @@
 package urlhandler
 
 import (
+	"chotaURL/dbhandler"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 	"sync"
-	"github.com/rs/cors"
+
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 var (
@@ -15,27 +18,27 @@ var (
 	count          = 0
 	port    string = "8080"
 )
-func init(){
+
+func init() {
 	fmt.Println("init function in url handler")
 }
 func HandleRequests() {
 	r := mux.NewRouter()
 	r.HandleFunc("/add/{url}", addURL)
 	r.HandleFunc("/{id}", redirectURL)
-	r.HandleFunc("/get/{id}", getURL) 
-	handler:=cors.Default().Handler(r)
+	r.HandleFunc("/get/{id}", getURL)
+	handler := cors.Default().Handler(r)
 	fmt.Println("listening on port " + port)
 	err := http.ListenAndServe(":"+port, handler)
 	if err != nil {
 		fmt.Printf("error is %s\n", err)
 	}
-	
 
 }
-func getURL(w http.ResponseWriter, r *http.Request) { 
+func getURL(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
-	fmt.Printf("request for shorturl %s\n",id )
+	fmt.Printf("request for shorturl %s\n", id)
 	mu.Lock()
 	defer mu.Unlock()
 
@@ -44,7 +47,7 @@ func getURL(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
-	fmt.Printf("url found %s\n",url)
+	fmt.Printf("url found %s\n", url)
 	w.Write([]byte(url))
 }
 func addURL(w http.ResponseWriter, r *http.Request) {
@@ -55,7 +58,14 @@ func addURL(w http.ResponseWriter, r *http.Request) {
 	count++
 	short := strconv.Itoa(count)
 	urlList[short] = url
-	fmt.Printf("short url is %s\n",short)
+	fmt.Printf("short url is %s\n", short)
+	err := dbhandler.InsertURL(short, url)
+	if err != nil {
+		log.Println("error in saving the url in db ", err)
+	} else {
+		log.Println("added short url in db")
+	}
+
 	fmt.Fprintf(w, fmt.Sprintf("short url is http://localhost:%s/%s\n", port, short))
 
 }
@@ -66,10 +76,13 @@ func redirectURL(w http.ResponseWriter, r *http.Request) {
 	mu.Lock()
 	defer mu.Unlock()
 
-	actualurl, ok := urlList[short]
-	if !ok {
-		http.NotFound(w, r)
-		return
+	actualurl, err := dbhandler.GetOriginalURL(short)
+
+	if err != nil {
+		fmt.Printf("error is getting actual url from db so reading from map %s\n", err)
+		actualurl = urlList[short]
+	} else {
+		fmt.Println("got original url from db ", actualurl)
 	}
 	fmt.Printf("redirecting to %s\n", actualurl)
 	http.Redirect(w, r, actualurl, http.StatusOK)

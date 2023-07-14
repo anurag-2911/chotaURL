@@ -21,7 +21,7 @@ type DbConfig struct {
 }
 
 func init() {
-	configFile, err := os.Open("../utils/config.json")
+	configFile, err := os.Open("utils/config.json")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -54,6 +54,20 @@ func init() {
 	fmt.Println("Successfully connected!")
 }
 
-func ConnectDB(){
-	fmt.Println("connecting to the db")
+func InsertURL(shortURL string, originalURL string) error {
+	_, err := db.Exec("INSERT INTO urls (short_url, original_url) VALUES ($1, $2)", shortURL, originalURL)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func GetOriginalURL(shorturl string) (string, error) {
+	var originalURL string
+	err := db.QueryRow("SELECT original_url FROM urls WHERE short_url = $1", shorturl).Scan(&originalURL)
+	if err != nil {
+		return "", fmt.Errorf("error in getting the value from db %s", err)
+	}
+	return originalURL, nil
+
 }
