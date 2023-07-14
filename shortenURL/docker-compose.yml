@@ -7,6 +7,16 @@ services:
     image: anurag2911/backend
     ports:
       - 8080:8080
+    links:
+      - db
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: novell@123
+      POSTGRES_DB: shorturl
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   web:
     build:

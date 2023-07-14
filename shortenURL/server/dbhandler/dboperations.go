@@ -6,7 +6,6 @@ import (
 	"fmt"
 	_ "github.com/lib/pq"
 	"io/ioutil"
-	"log"
 	"os"
 )
 
@@ -20,22 +19,26 @@ type DbConfig struct {
 	Port     string `json:"port"`
 }
 
-func init() {
+func DBinit() {
+	fmt.Println("initializing database")
 	configFile, err := os.Open("utils/config.json")
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
+		return
 	}
 	defer configFile.Close()
 
 	var config DbConfig
 	data, err := ioutil.ReadAll(configFile)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
+		return
 	}
 
 	err = json.Unmarshal(data, &config)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
+		return
 	}
 	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s "+
 		"password=%s dbname=%s sslmode=disable",
@@ -43,12 +46,14 @@ func init() {
 
 	db, err = sql.Open("postgres", psqlInfo)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
+		return
 	}
 
 	err = db.Ping()
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
+		return
 	}
 
 	fmt.Println("Successfully connected!")
