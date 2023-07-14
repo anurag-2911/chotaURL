@@ -15,7 +15,9 @@ var (
 	count          = 0
 	port    string = "8080"
 )
-
+func init(){
+	fmt.Println("init function in url handler")
+}
 func HandleRequests() {
 	r := mux.NewRouter()
 	r.HandleFunc("/add/{url}", addURL)

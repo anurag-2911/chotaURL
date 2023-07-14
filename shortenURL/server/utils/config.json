@@ -1,0 +1,7 @@
+{
+    "user": "postgres",
+    "password": "novell@123",
+    "dbname": "shorturl",
+    "host": "localhost",
+    "port": "5432"
+}
