@@ -31,7 +31,7 @@ services:
       - backend
 
     environment:
-      - REACT_APP_BACKEND_HOST=backend
+      - REACT_APP_BACKEND_HOST=localhost
 
 volumes:
   db-data:
