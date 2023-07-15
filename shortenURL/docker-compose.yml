@@ -36,4 +36,9 @@ services:
       - chotaurl-net
     environment:
     - REACT_APP_BACKEND_HOST=backend
+
+networks:
+  chotaurl-net:
+volumes:
+  db-data:
  
