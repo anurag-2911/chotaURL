@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import HelloWorld from './Hello/HelloWorld';
+import JokeComponent from "./Hello/JokeComponent";
 
 function App() {
   const [url, setUrl] = useState("");
@@ -45,9 +46,9 @@ function App() {
   return (
     <div className="layout">
       <div className="navigation">
-        <a href="#">Home</a>
-        <a href="#">About</a>
-        <a href="#">Contact</a>
+        <a href="/#">Home</a>
+        <a href="/#">About</a>
+        <a href="/#">Contact</a>
       </div>
       <div className="main-content">
         <div>
@@ -74,6 +75,10 @@ function App() {
         <br/>
         <div>
           <HelloWorld />
+        </div>
+        <br/>
+        <div>
+          <JokeComponent />
         </div>
       </div>
       <div className="info-area">
