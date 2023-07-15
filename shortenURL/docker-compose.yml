@@ -1,14 +1,16 @@
-version: '3'
+version: '3.8'
 services:
-  urlshortener:
+  backend:
     build: 
       context: ./server
       dockerfile: Dockerfile
     image: anurag2911/backend
     ports:
       - 8080:8080
-    links:
+    depends_on:
       - db
+    networks:
+      - chotaurl-net
   db:
     image: postgres:latest
     environment:
@@ -17,8 +19,11 @@ services:
       POSTGRES_DB: shorturl
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - chotaurl-net
 
-  web:
+  frontend:
     build:
       context: ./client  
       dockerfile: Dockerfile
@@ -26,4 +31,9 @@ services:
     ports:
       - 3000:3000
     depends_on:
-      - urlshortener
+      - backend
+    networks:
+      - chotaurl-net
+    environment:
+    - REACT_APP_BACKEND_HOST=backend
+ 

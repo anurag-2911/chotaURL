@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import "./App.css";
-import HelloWorld from './Hello/HelloWorld';
+import HelloWorld from "./Hello/HelloWorld";
 import JokeComponent from "./Hello/JokeComponent";
 
 function App() {
+  const host = process.env.REACT_APP_BACKEND_HOST;
   const [url, setUrl] = useState("");
   const [shortUrl, setShortUrl] = useState("");
   const [loading, setLoading] = useState(false);
@@ -12,11 +13,12 @@ function App() {
   const shortenUrl = async () => {
     setError(null);
     try {
-      const response = await fetch(`http://localhost:8080/add/${url}`);
+      console.log("host value is ", host);
+      const response = await fetch(`http://${host}:8080/add/${url}`);
       const shortUrl = await response.text();
       setShortUrl(shortUrl);
     } catch (error) {
-      setError("Internal Error");
+      setError("Internal Error", error);
     }
   };
 
@@ -26,7 +28,7 @@ function App() {
 
     try {
       const shortUrlId = shortUrl.split("/").pop();
-      const response = await fetch(`http://localhost:8080/get/${shortUrlId}`);
+      const response = await fetch(`http://${host}:8080/get/${shortUrlId}`);
 
       if (!response.ok) {
         console.error("Error during redirect", response.status);
@@ -65,18 +67,16 @@ function App() {
               <p>Your short URL is: {shortUrl}</p>
               <button onClick={redirectUrl} disabled={loading}>
                 {loading ? "Loading..." : "Go to URL"}
-                
               </button>
-              
             </div>
           )}
           {error && <p>{error}</p>}
         </div>
-        <br/>
+        <br />
         <div>
           <HelloWorld />
         </div>
-        <br/>
+        <br />
         <div>
           <JokeComponent />
         </div>
