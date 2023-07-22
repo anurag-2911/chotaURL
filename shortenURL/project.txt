@@ -37,7 +37,7 @@ Next Level Requirements:
 Notes:
 1. minikube service frontend-service 
     : This opens the frontend service in the web browser.
-2.  kubectl set image deployment/frontend frontend=anurag2911/frontend
+2. kubectl set image deployment/frontend frontend=anurag2911/frontend
     : to update the image in the deployment.
 3. 
 
